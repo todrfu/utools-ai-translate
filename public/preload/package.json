@@ -1,0 +1,7 @@
+{
+  "type": "commonjs",
+  "main": "services.js",
+  "dependencies": {
+    "axios": "^1.9.0"
+  }
+}

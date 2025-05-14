@@ -1,0 +1,135 @@
+:root {
+  --primary-color: #1890ff;
+  --text-color: #333;
+  --light-bg: #f4f4f4;
+  --dark-bg: #1f1f1f;
+  --dark-text: #fff;
+  --border-color: #e0e0e0;
+  --focus-color: #40a9ff;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+button {
+  border: none;
+  background-color: var(--primary-color);
+  color: #fff;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: all 0.3s;
+  padding: 6px 16px;
+  border-radius: 2px;
+}
+
+button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+button:hover:not(:disabled) {
+  background-color: var(--focus-color);
+}
+
+textarea {
+  display: block;
+  margin: 0;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #bbb;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #999;
+}
+
+/* 深色模式下的通用样式 */
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #444;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+  
+  /* Ant Design 组件的深色模式样式覆盖 */
+  .ant-modal, 
+  .ant-modal-content,
+  .ant-modal-header,
+  .ant-card, 
+  .ant-input, 
+  .ant-form-item-label > label,
+  .ant-select,
+  .ant-tabs-tab {
+    background-color: #262626 !important;
+    color: var(--dark-text) !important;
+    border-color: #444 !important;
+  }
+  
+  .ant-input::placeholder {
+    color: #888 !important;
+  }
+  
+  .ant-select-dropdown {
+    background-color: #262626 !important;
+  }
+  
+  .ant-select-item {
+    color: var(--dark-text) !important;
+  }
+  
+  .ant-select-item-option-selected,
+  .ant-select-item-option-active {
+    background-color: #1f1f1f !important;
+  }
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+/* 通用过渡效果 */
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 300ms;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 300ms;
+}
