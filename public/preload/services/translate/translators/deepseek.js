@@ -1,8 +1,8 @@
-const { TARGET_LANGUAGES_NAME_FOR_PROMPT, TRANSLATE_PROMPT } = require('../config')
+const { replacePrompt } = require('../config')
 
 module.exports = {
-  name: '智谱GLM',
-  icon: '🌐',
+  name: 'DeepSeek',
+  icon: '🧠',
   requiredFields: ['apiKey'],
   supportedLanguages: [
     'zh',
@@ -17,14 +17,14 @@ module.exports = {
     'zh-tw',
     'pt',
   ],
-  baseUrl: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
+  baseUrl: 'https://api.deepseek.com/v1/chat/completions',
   prepareRequest: (text, from, to, config) => {
-    const targetLanguage = TARGET_LANGUAGES_NAME_FOR_PROMPT[to] || to
     // 替换提示词模板中的变量
-    const promptTemplate = TRANSLATE_PROMPT.replace('{text}', text).replace(
-      '{targetLanguage}',
-      targetLanguage
-    )
+    const prompt = replacePrompt({
+      text,
+      from,
+      to,
+    })
 
     return {
       method: 'post',
@@ -32,11 +32,12 @@ module.exports = {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${config.apiKey}`,
       },
-      data: JSON.stringify({
-        model: 'GLM-4-Flash-250414',
-        messages: [{ role: 'user', content: promptTemplate }],
+      data: {
+        model: 'deepseek-chat',
+        messages: [{ role: 'user', content: prompt }],
         stream: false,
-      }),
+        temperature: 0.3, // 低温度以确保翻译准确性
+      },
     }
   },
   parseResponse: data => {
@@ -49,7 +50,7 @@ module.exports = {
         raw: data,
       }
     } else {
-      throw new Error('智谱GLM翻译解析响应出错')
+      throw new Error('DeepSeek翻译解析响应出错')
     }
   },
 }

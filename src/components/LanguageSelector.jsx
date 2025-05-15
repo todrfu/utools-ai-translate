@@ -72,8 +72,8 @@ const LanguageSelector = ({
   }
 
   return (
-    <div className="language-selector">
-      <div className="language-direction">
+    <div className="translate__lang-selector">
+      <div className="translate__lang-direction">
         <Select
           value={sourceLang}
           onChange={handleSourceLangChange}
@@ -90,7 +90,7 @@ const LanguageSelector = ({
             icon={<SwapOutlined />} 
             onClick={handleSwapLanguages}
             disabled={sourceLang === 'auto'}
-            className="swap-button"
+            className="translate__lang-swap-btn"
             size="middle"
             style={{ margin: '0 8px' }}
           />

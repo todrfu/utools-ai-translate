@@ -19,6 +19,7 @@ import {
   CloudUploadOutlined,
   CloudDownloadOutlined,
 } from '@ant-design/icons'
+import { SETTINGS_TABS } from '../shared/constant'
 
 const { Title, Paragraph } = Typography
 const { TabPane } = Tabs
@@ -96,12 +97,14 @@ export const SettingsModal = ({
         footer={null}
         width={700}
         style={{ top: 20 }}
-        bodyStyle={{ padding: 0 }}
         destroyOnClose
         maskClosable={false}
       >
         <Tabs tabPosition='left' style={{ minHeight: 400 }}>
-          <TabPane tab='常规设置' key='general'>
+          <TabPane
+            tab={SETTINGS_TABS.GENERAL.label}
+            key={SETTINGS_TABS.GENERAL.key}
+          >
             <div style={{ padding: '20px' }}>
               <Form layout='vertical'>
                 <Form.Item
@@ -124,21 +127,31 @@ export const SettingsModal = ({
                 </Form.Item>
 
                 <Form.Item
-                  label='去除换行（适合PDF复制文本）'
+                  label={
+                    <Space>
+                      去除换行
+                      <Tooltip title='关闭后，翻译结果保留原文的换行格式'>
+                        <QuestionCircleOutlined />
+                      </Tooltip>
+                    </Space>
+                  }
                   name='removeLineBreaks'
                 >
                   <Switch
                     checked={config.removeLineBreaks || false}
-                    onChange={checked =>
+                    onChange={checked => {
                       onConfigChange('removeLineBreaks', checked)
-                    }
+                    }}
                   />
                 </Form.Item>
               </Form>
             </div>
           </TabPane>
 
-          <TabPane tab='翻译服务' key='translators'>
+          <TabPane
+            tab={SETTINGS_TABS.TRANSLATORS.label}
+            key={SETTINGS_TABS.TRANSLATORS.key}
+          >
             <div style={{ padding: '20px' }}>
               <Paragraph style={{ marginBottom: 16 }}>
                 选择你要使用的翻译服务，并配置对应的API密钥。
@@ -155,7 +168,6 @@ export const SettingsModal = ({
                         type='primary'
                         size='small'
                         onClick={() => openConfigDialog(key)}
-                        disabled={key === 'google'}
                       >
                         配置
                       </Button>,
@@ -190,12 +202,11 @@ export const SettingsModal = ({
                       }
                       title={translator.name}
                       description={
-                        key !== 'google' &&
-                        ((config.translatorConfigs || {})[key] ? (
+                        (config.translatorConfigs || {})[key] ? (
                           <Badge status='success' text='已配置' />
                         ) : (
                           <Badge status='error' text='未配置' />
-                        ))
+                        )
                       }
                     />
                   </List.Item>
@@ -204,16 +215,19 @@ export const SettingsModal = ({
             </div>
           </TabPane>
 
-          <TabPane tab='备份与恢复' key='backup'>
+          <TabPane
+            tab={SETTINGS_TABS.BACKUP.label}
+            key={SETTINGS_TABS.BACKUP.key}
+          >
             <div style={{ padding: '20px' }}>
-              <Space direction='vertical' style={{ width: '100%' }}>
+              <Space style={{ width: '100%' }}>
                 <Button
                   type='primary'
                   icon={<CloudDownloadOutlined />}
                   onClick={() => {
                     const path = window.utools.showSaveDialog({
                       title: '保存配置文件',
-                      defaultPath: 'ai-translate-config.json',
+                      defaultPath: 'utools-plugin-copilot.json',
                     })
                     if (path) {
                       onExportConfig(path)
@@ -243,11 +257,14 @@ export const SettingsModal = ({
             </div>
           </TabPane>
 
-          <TabPane tab='关于' key='about'>
+          <TabPane
+            tab={SETTINGS_TABS.ABOUT.label}
+            key={SETTINGS_TABS.ABOUT.key}
+          >
             <div style={{ padding: '20px' }}>
-              <Title level={4}>atob翻译</Title>
+              <Title level={4}>copilot工具助手</Title>
               <Paragraph>版本: 0.0.1</Paragraph>
-              <Paragraph>支持多种翻译服务的uTools翻译插件</Paragraph>
+              <Paragraph>支持多种服务的贴心智能的工具助手</Paragraph>
               <Paragraph>如果你喜欢这个插件，别忘了给一个好评 ❤️</Paragraph>
 
               <Divider />
