@@ -4,19 +4,6 @@ module.exports = {
   name: '智谱GLM',
   icon: '🌐',
   requiredFields: ['apiKey'],
-  supportedLanguages: [
-    'zh',
-    'en',
-    'ja',
-    'ru',
-    'ko',
-    'de',
-    'fr',
-    'es',
-    'th',
-    'zh-tw',
-    'pt',
-  ],
   baseUrl: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
   prepareRequest: (text, from, to, config) => {
     const prompt = replacePrompt({

@@ -1,14 +1,14 @@
 // 默认配置
 const DEFAULT_CONFIG = {
   // 翻译相关设置
-  enabledTranslators: ['glm', 'caiyun', 'deepl'],
+  enabledTranslators: ['glm', 'deepseek', 'deepl'],
   defaultSourceLang: 'auto', // 默认源语言
-  defaultTargetLang: 'en', // 默认目标语言
+  defaultTargetLang: '简体中文', // 默认目标语言
   translatorConfigs: {}, // 各翻译服务API配置
   
   // 用户上次使用的设置，用于持久化
   lastSourceLang: 'auto', // 用户上次使用的源语言
-  lastTargetLang: 'en', // 用户上次使用的目标语言
+  lastTargetLang: '简体中文', // 用户上次使用的目标语言
   lastSelectedTranslator: 'glm', // 用户上次使用的翻译器
   
   // 界面设置

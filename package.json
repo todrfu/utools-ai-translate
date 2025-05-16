@@ -1,7 +1,7 @@
 {
-  "name": "utools-copilot",
+  "name": "utools-smart-translate",
   "version": "0.0.1",
-  "description": "贴心智能的工具助手",
+  "description": "更智能的翻译工具",
   "type": "module",
   "scripts": {
     "dev": "vite",

@@ -1,6 +1,5 @@
 const axios = require('axios')
 const TRANSLATORS = require('./translators')
-const { mapLanguage } = require('./config')
 const coreServices = require('../core')
 
 // 翻译服务
@@ -27,7 +26,7 @@ const translateServices = {
    * 目前支持的处理选项：
    * - removeLineBreaks: 移除所有换行符，替换为空格
    * 
-   * 未来可扩展的处理选项：
+   * 可扩展的处理选项：
    * - 移除HTML标签
    * - 处理特殊字符
    * - 文本截断/限制长度
@@ -51,8 +50,7 @@ const translateServices = {
       processedText = processedText.replace(/\n/g, ' ')
       processedText = processedText.replace(/\s+/g, ' ')
     } else {
-      // 保留换行符，但可能需要规范化它们
-      // 例如：将Windows风格的\r\n统一为\n
+      // 将\r\n统一为\n
       processedText = processedText.replace(/\r\n/g, '\n')
     }
 
@@ -74,7 +72,6 @@ const translateServices = {
     
     const apiConfig = config.translatorConfigs && config.translatorConfigs[translatorKey]
     
-    // 谷歌翻译不需要API配置
     if (!apiConfig || !this.isApiConfigValid(translatorKey, apiConfig)) {
       throw new Error(`翻译服务 ${translator.name} 未正确配置API密钥`)
     }
@@ -105,8 +102,8 @@ const translateServices = {
           headers: { 'Content-Type': 'application/json' },
           data: {
             text: processedText,
-            source: mapLanguage(from, translatorKey),
-            target: mapLanguage(to, translatorKey)
+            source: from,
+            target: to
           },
           timeout: 30000,
           signal
@@ -185,25 +182,6 @@ const translateServices = {
     
     const requiredFields = translator.requiredFields || []
     return requiredFields.every(field => apiConfig[field])
-  },
-
-  // 检测语言
-  detectLanguage(text) {
-    if (!text) return 'en'
-    
-    // 基础语言检测逻辑
-    const hasChineseChars = /[\u4e00-\u9fa5]/.test(text)
-    const hasJapaneseChars = /[\u3040-\u30ff]/.test(text)
-    const hasKoreanChars = /[\uac00-\ud7a3]/.test(text)
-    const hasRussianChars = /[\u0400-\u04FF]/.test(text)
-    
-    if (hasChineseChars) return 'zh'
-    if (hasJapaneseChars) return 'ja'
-    if (hasKoreanChars) return 'ko'
-    if (hasRussianChars) return 'ru'
-    
-    // 默认英文
-    return 'en'
   }
 }
 

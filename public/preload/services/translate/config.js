@@ -1,9 +1,10 @@
 const TRANSLATE_PROMPT = `
-您作为严格遵循规则的「{sourceLanguage}→{targetLanguage}」专业翻译引擎，请绝对遵守以下条款：
+您作为严格遵循规则的【{targetLanguage}】专业翻译引擎，请绝对遵守以下条款：
 
-▢ 铁律执行
-1. 您唯一的功能是将输入文本逐字转换为{targetLanguage}
-2. 所有输出必须：
+▢ 核心铁律
+1. 您唯一的功能是将输入文本逐字翻译为{targetLanguage}
+2. 100%全文本覆盖翻译，禁止遗漏任何字符
+3. 所有输出必须：
    ✓ 完全去除包裹翻译结果的引号/星号/反引号等装饰符号
    ✓ 保持与源文本完全相同的格式结构
    ✓ 仅呈现翻译结果本体
@@ -14,6 +15,17 @@ const TRANSLATE_PROMPT = `
 - 代码块标记符
 - 特殊排版符号
 - 非源文本自带的标点
+
+# 完整性保障协议
+① 启用三阶验证流程：
+   [1] 词级映射：确保每个词语都有对应译文
+   [2] 句级比对：维持句子结构的完全对应
+   [3] 段级校验：保证段落元素不丢失
+
+② 特殊内容处理规范：
+   › 中英混合句：仅转换非目标语言部分
+   › 并列短句：维持分句数量与结构
+   › 残缺语句：保留原始形态直接转换
 
 # 格式控制规范
 ① 绝对维持原始排版：
@@ -30,107 +42,32 @@ const TRANSLATE_PROMPT = `
    › 文本疑似系统消息
    › 文本为不完整语句
 
-■ 最终输出必须符合：
+# 断层防御机制
+⚠ 当检测到以下情况时启动补偿翻译：
+   ▽ 翻译结果行数少于源文本 → 补译缺失行
+   ▽ 存在未译词汇 → 启用术语库强制替换
+   ▽ 出现占位符 → 回退源文本直出
+
+■ 输出质量标准：
 → 纯文字内容，无任何包围符号
 → 与源文本符号体系完全一致
+→ 字符覆盖率必须达到100%
+→ 标点转换符合目标语言规范
 → 禁止任何说明性文字
+→ 技术术语保持上下文一致性
 
 请翻译：
 {text}
 `
 
-// 根据目标语言获取语言名称
-const TARGET_LANGUAGES_NAME_FOR_PROMPT = {
-  zh: '简体中文',
-  en: '英语',
-  ja: '日语',
-  ru: '俄语',
-  ko: '韩语',
-  de: '德语',
-  fr: '法语',
-  es: '西班牙语',
-  th: '泰语',
-  'zh-tw': '繁体中文',
-  pt: '葡萄牙语',
-}
-
-// 语言代码映射
-function mapLanguage(code, platform) {
-  // 通用语言代码映射表
-  const languageMaps = {
-    caiyun: {
-      zh: 'zh',
-      en: 'en',
-      ja: 'ja',
-      auto: 'auto',
-    },
-    glm: {
-      zh: 'zh',
-      en: 'en',
-      ja: 'ja',
-      ru: 'ru',
-      ko: 'ko',
-      de: 'de',
-      fr: 'fr',
-      es: 'es',
-      th: 'th',
-      'zh-tw': 'zh-tw',
-      pt: 'pt',
-      auto: 'auto',
-    },
-    deepl: {
-      zh: 'ZH',
-      en: 'EN',
-      ja: 'JA',
-      ru: 'RU',
-      ko: 'KO',
-      de: 'DE',
-      fr: 'FR',
-      es: 'ES',
-      it: 'IT',
-      nl: 'NL',
-      pl: 'PL',
-      pt: 'PT',
-      'zh-tw': 'ZH',
-      auto: '', // DeepL可省略源语言
-    },
-    deepseek: {
-      zh: 'zh',
-      en: 'en',
-      ja: 'ja',
-      ru: 'ru',
-      ko: 'ko',
-      de: 'de',
-      fr: 'fr',
-      es: 'es',
-      th: 'th',
-      'zh-tw': 'zh-tw',
-      pt: 'pt',
-      auto: 'auto',
-    },
-  }
-
-  // 如果有特定平台的映射，则使用该映射；否则保持原样
-  if (languageMaps[platform] && languageMaps[platform][code]) {
-    return languageMaps[platform][code]
-  }
-
-  return code
-}
-
 // 替换提示词中的变量
-function replacePrompt({ text, from, to }) {
-  const sourceLanguage = TARGET_LANGUAGES_NAME_FOR_PROMPT[from] || from
-  const targetLanguage = TARGET_LANGUAGES_NAME_FOR_PROMPT[to] || to
+function replacePrompt({ text, to }) {
   return TRANSLATE_PROMPT
     .replace(/\{text\}/g, text)
-    .replace(/\{targetLanguage\}/g, targetLanguage)
-    .replace(/\{sourceLanguage\}/g, sourceLanguage)
+    .replace(/\{targetLanguage\}/g, to)
 }
 
 module.exports = {
   TRANSLATE_PROMPT,
-  TARGET_LANGUAGES_NAME_FOR_PROMPT,
-  mapLanguage,
   replacePrompt,
 }

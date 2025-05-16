@@ -4,7 +4,7 @@ const os = require('node:os')
 const { DEFAULT_CONFIG } = require('./config')
 
 // 配置文件路径
-const configPath = path.join(os.homedir(), '.utools-plugin-copilot.json')
+const configPath = path.join(os.homedir(), '.utools-plugin-smart-translate.json')
 
 // 核心服务
 const coreServices = {

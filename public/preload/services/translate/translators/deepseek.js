@@ -4,19 +4,6 @@ module.exports = {
   name: 'DeepSeek',
   icon: '🧠',
   requiredFields: ['apiKey'],
-  supportedLanguages: [
-    'zh',
-    'en',
-    'ja',
-    'ru',
-    'ko',
-    'de',
-    'fr',
-    'es',
-    'th',
-    'zh-tw',
-    'pt',
-  ],
   baseUrl: 'https://api.deepseek.com/v1/chat/completions',
   prepareRequest: (text, from, to, config) => {
     // 替换提示词模板中的变量

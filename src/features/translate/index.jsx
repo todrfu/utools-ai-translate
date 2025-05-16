@@ -34,7 +34,6 @@ function TranslateFeature() {
     loading,
     selectedTranslator,
     setSelectedTranslator,
-    detectedLanguage,
     translate,
     clearInput,
     handleKeyDown,
@@ -83,9 +82,8 @@ function TranslateFeature() {
           onChange={setSourceText}
           onKeyDown={handleKeyDown}
           onClear={clearInput}
-          onSpeak={text => speakText(text, detectedLanguage || sourceLang)}
+          onSpeak={text => speakText(text, sourceLang)}
           loading={loading}
-          detectedLanguage={detectedLanguage}
           onTranslate={translate}
           onCancelTranslation={cancelTranslation}
           inputRef={inputRef}
@@ -111,11 +109,6 @@ function TranslateFeature() {
           targetLang={targetLang}
           onSourceLangChange={setSourceLang}
           onTargetLangChange={setTargetLang}
-          supportedLanguages={
-            selectedTranslator && TRANSLATORS[selectedTranslator]
-              ? TRANSLATORS[selectedTranslator].supportedLanguages
-              : []
-          }
         />
       </div>
 

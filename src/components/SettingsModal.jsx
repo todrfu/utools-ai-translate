@@ -227,7 +227,7 @@ export const SettingsModal = ({
                   onClick={() => {
                     const path = window.utools.showSaveDialog({
                       title: '保存配置文件',
-                      defaultPath: 'utools-plugin-copilot.json',
+                      defaultPath: 'utools-plugin-smart-translate.json',
                     })
                     if (path) {
                       onExportConfig(path)
@@ -262,9 +262,9 @@ export const SettingsModal = ({
             key={SETTINGS_TABS.ABOUT.key}
           >
             <div style={{ padding: '20px' }}>
-              <Title level={4}>copilot工具助手</Title>
+              <Title level={4}>智翻</Title>
               <Paragraph>版本: 0.0.1</Paragraph>
-              <Paragraph>支持多种服务的贴心智能的工具助手</Paragraph>
+              <Paragraph>支持多个AI平台的智能翻译工具</Paragraph>
               <Paragraph>如果你喜欢这个插件，别忘了给一个好评 ❤️</Paragraph>
 
               <Divider />

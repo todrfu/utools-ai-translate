@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react'
-import { Input, Button, Tooltip, Typography } from 'antd'
+import { Input, Button, Tooltip } from 'antd'
 import {
   SoundOutlined,
   CloseCircleOutlined,
@@ -7,7 +7,6 @@ import {
 } from '@ant-design/icons'
 
 const { TextArea } = Input
-const { Text } = Typography
 
 const TranslateInput = ({
   value,
@@ -18,8 +17,7 @@ const TranslateInput = ({
   onTranslate,
   onCancelTranslation,
   loading,
-  detectedLanguage,
-  placeholder = '请输入要翻译的内容，按Shift+Enter键可换行，关于设置中【输入时自动翻译】时按Enter键翻译',
+  placeholder = '请输入要翻译的内容（Shift+Enter键换行 / Enter键翻译 / 快速三击删除键清空）',
   inputRef,
 }) => {
   // 使用内部ref或外部传入的ref
@@ -62,7 +60,7 @@ const TranslateInput = ({
   // 朗读输入文本
   const handleSpeak = () => {
     if (value && onSpeak) {
-      onSpeak(value, detectedLanguage || 'auto')
+      onSpeak(value, 'auto')
     }
   }
 
@@ -89,14 +87,6 @@ const TranslateInput = ({
       />
 
       <div className='translate__input-tools'>
-        {detectedLanguage && (
-          <div className='translate__detected-language'>
-            检测到:{' '}
-            <Text type='primary' style={{ marginLeft: '4px' }}>
-              {detectedLanguage}
-            </Text>
-          </div>
-        )}
 
         <div className='translate__input-buttons'>
           {loading ? (
