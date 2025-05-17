@@ -1,10 +1,8 @@
-const { mapLanguage } = require('../config')
-
 module.exports = {
   name: '彩云小译',
   icon: '☁️',
   requiredFields: ['token'],
-  supportedLanguages: ['zh', 'en', 'ja', 'ru'],
+  supportedLanguages: ['zh', 'en', 'ja'],
   baseUrl: 'https://api.interpreter.caiyunai.com/v1/translator',
   prepareRequest: (text, from, to, config) => {
     return {
@@ -15,22 +13,19 @@ module.exports = {
       },
       data: JSON.stringify({
         source: text,
-        trans_type: `${mapLanguage(from, 'caiyun')}2${mapLanguage(to, 'caiyun')}`,
-        request_id: 'ai-translate',
-        detect: true,
+        trans_type: `${from}2${to}`,
+        detect: from === 'auto',
       }),
     }
   },
   parseResponse: data => {
     if (data.target) {
       return {
-        translatedText: Array.isArray(data.target)
-          ? data.target.join('\n')
-          : data.target,
+        translatedText: data.target,
         raw: data,
       }
     } else {
-      throw new Error('彩云小译翻译解析响应出错')
+      throw new Error('彩云翻译解析响应出错')
     }
   },
-}
+} 

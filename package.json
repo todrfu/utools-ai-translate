@@ -1,7 +1,7 @@
 {
-  "name": "utools-ai-translate",
+  "name": "utools-smart-translate",
   "version": "0.0.1",
-  "description": "atob翻译 - 支持多种翻译服务的uTools翻译插件",
+  "description": "更智能的翻译工具",
   "type": "module",
   "scripts": {
     "dev": "vite",

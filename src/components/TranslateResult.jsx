@@ -1,23 +1,20 @@
 import React from 'react'
-import { Spin, Button, Tooltip, Empty, Alert } from 'antd'
-import { SoundOutlined, CopyOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
-
+import { Spin, Button, Tooltip, Alert } from 'antd'
+import {
+  SoundOutlined,
+  ExclamationCircleOutlined,
+  LoadingOutlined,
+  StopOutlined,
+} from '@ant-design/icons'
 
 const TranslateResult = ({
   result,
   loading,
   language,
-  onCopy,
   onSpeak,
-  fontSize = 16
+  onCancelTranslation,
+  fontSize = 16,
 }) => {
-  // 处理复制
-  const handleCopy = () => {
-    if (result?.translatedText && onCopy) {
-      onCopy(result.translatedText)
-    }
-  }
-
   // 处理朗读
   const handleSpeak = () => {
     if (result?.translatedText && onSpeak) {
@@ -25,61 +22,72 @@ const TranslateResult = ({
     }
   }
 
+  // 处理取消翻译
+  const handleCancel = () => {
+    if (onCancelTranslation) {
+      onCancelTranslation()
+    }
+  }
+
   // 显示占位符内容或已翻译的内容
   const renderContent = () => {
     if (loading) {
       return (
-        <div className="result-loading">
-          <Spin tip="翻译中..." />
+        <div className='translate__result-loading'>
+          <Spin
+            indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />}
+            tip={
+              <div>
+                <div style={{ marginBottom: '10px' }}>翻译中...</div>
+                <Button
+                  type='primary'
+                  danger
+                  size='small'
+                  icon={<StopOutlined />}
+                  onClick={handleCancel}
+                >
+                  取消翻译
+                </Button>
+              </div>
+            }
+          />
         </div>
       )
-    } 
-    
+    }
+
     if (result?.error) {
       return (
         <Alert
-          type="error"
+          type='error'
           showIcon
           icon={<ExclamationCircleOutlined />}
           message={`翻译错误: ${result.error}`}
         />
       )
-    } 
-    
-    if (!result?.translatedText) {
-      return (
-        <Empty description="等待输入翻译内容..." />
-      )
     }
-    
+
+    if (!result?.translatedText) {
+      return <span className='translate__result-empty'>等待输入翻译内容...</span>
+    }
+
     return (
-      <div className="translated-text" style={{ fontSize: `${fontSize}px` }}>
+      <div className='translate__result-text' style={{ fontSize: `${fontSize}px` }}>
         {result.translatedText}
       </div>
     )
   }
 
   return (
-    <div className="translation-result">
-      <div className="result-content">
-        {renderContent()}
-      </div>
-      
-      {result?.translatedText && (
-        <div className="result-actions">
-          <Tooltip title="朗读">
-            <Button 
-              type="text" 
+    <div className='translate__result'>
+      <div className='translate__result-content'>{renderContent()}</div>
+
+      {result?.translatedText && !loading && (
+        <div className='translate__result-actions'>
+          <Tooltip title='朗读'>
+            <Button
+              type='text'
               icon={<SoundOutlined />}
               onClick={handleSpeak}
-            />
-          </Tooltip>
-          
-          <Tooltip title="复制">
-            <Button 
-              type="text" 
-              icon={<CopyOutlined />}
-              onClick={handleCopy}
             />
           </Tooltip>
         </div>

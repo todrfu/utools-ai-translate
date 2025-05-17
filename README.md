@@ -1,16 +1,16 @@
-# ai-translate - uTools翻译插件
+# 智翻 - uTools插件
 
 <div align="center">
-  <img src="./demo.png" alt="ai-translate Logo" />
+  <img src="./demo.png" alt="智翻 Logo" />
 </div>
 
 ## 简介
 
-ai-translate是一个[uTools](https://u.tools)采用AI来翻译的插件，语义更加准确。
+智翻是一个[uTools](https://u.tools)通过AI来翻译的插件。
 
 ## 翻译服务配置
 
-ai-translate支持配置第三方翻译服务API，以获得更好的翻译体验：
+智翻需配置第三方翻译服务API，以获得更好的翻译体验：
 
 1. 点击界面右下角的设置按钮
 2. 在弹出的设置对话框中选择需要配置的翻译服务
@@ -27,7 +27,7 @@ A: 所有配置数据保存在uTools的数据存储中，卸载插件前请注�
 
 ## 隐私说明
 
-ai-translate尊重用户隐私，除了执行翻译操作外，不会收集或上传任何个人信息。所有翻译请求均直接发送至对应的翻译服务提供商。
+智翻尊重用户隐私，除了执行翻译操作外，不会收集或上传任何个人信息。所有翻译请求均直接发送至对应的翻译服务提供商。
 
 ## 许可协议
 

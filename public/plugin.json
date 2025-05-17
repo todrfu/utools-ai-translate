@@ -1,18 +1,20 @@
 {
   "main": "index.html",
-  "preload": "preload/services.js",
+  "preload": "preload/main.js",
   "logo": "logo.png",
   "development": {
     "main": "http://localhost:5173"
   },
   "features": [
     {
-      "code": "ai",
+      "code": "translate",
       "explain": "支持AI翻译的翻译插件",
       "cmds": [
-        "ai", 
-        "fy",
         "翻译",
+        "fy",
+        "smart",
+        "trans",
+        "ai", 
         {
           "type": "over",
           "label": "任意文本匹配",
