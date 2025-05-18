@@ -8,12 +8,10 @@
   "features": [
     {
       "code": "translate",
-      "explain": "支持AI翻译的翻译插件",
+      "explain": "AI翻译",
       "cmds": [
         "翻译",
         "fy",
-        "smart",
-        "trans",
         "ai", 
         {
           "type": "over",

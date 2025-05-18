@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import Text from 'antd/lib/typography/Text'
-import TranslateInput from '../../components/TranslateInput'
-import TranslateResult from '../../components/TranslateResult'
-import LanguageSelector from '../../components/LanguageSelector'
-import TranslatorTabs from '../../components/TranslatorTabs'
-import SettingsModal from '../../components/SettingsModal'
-import TranslateFooter from '../../components/TranslateFooter'
-import { useTranslation } from '../../hooks/useTranslation'
-import { useConfig } from '../../hooks/useConfig'
+import TranslateInput from '@/components/translate/TranslateInput'
+import TranslateResult from '@/components/translate/TranslateResult'
+import LanguageSelector from '@/components/translate/LanguageSelector'
+import TranslatorTabs from '@/components/translate/TranslatorTabs'
+import SettingsModal from '@/components/translate/SettingsModal'
+import TranslateFooter from '@/components/translate/TranslateFooter'
+import { useTranslation } from '@/hooks/useTranslation'
+import { useConfig } from '@/hooks/useConfig'
 import './translate.css'
 
 function TranslateFeature() {
-  // 初始化状态
   const [configVisible, setConfigVisible] = useState(false)
-  // 使用配置Hook
   const {
     config,
     updateConfig,
@@ -25,7 +23,6 @@ function TranslateFeature() {
   const {
     sourceText,
     setSourceText,
-    performTranslation,
     sourceLang,
     setSourceLang,
     targetLang,
@@ -46,17 +43,14 @@ function TranslateFeature() {
   // 获取翻译服务配置
   const TRANSLATORS = window.services ? window.services.getTranslators() : {}
 
-  // 加载配置
   useEffect(() => {
     if (window.services) {
       // 处理uTools插件进入事件
       window.utools.onPluginEnter(action => {
         if (action.code === 'translate') {
-          const { payload } = action
-          if (payload) {
-            const t = payload.trim()
+          if (action.payload) {
+            const t = action.payload.trim()
             setSourceText(t)
-            performTranslation(t)
           }
         }
       })
@@ -66,7 +60,7 @@ function TranslateFeature() {
         setSourceText('')
       })
     }
-  }, [])
+  }, [config])
 
   // 显示设置对话框
   const showSettings = () => {

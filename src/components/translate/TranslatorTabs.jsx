@@ -2,7 +2,7 @@ import { message } from 'antd'
 import React from 'react'
 
 // icons
-const modules = import.meta.glob('../assets/images/translate/*', { eager: true })
+const modules = import.meta.glob('@/assets/images/translate/*', { eager: true })
 const iconMap = Object.fromEntries(
   Object.keys(modules).map((key) => [key.split('/').pop().split('.').shift(), modules[key].default])
 )

@@ -4,7 +4,7 @@ const os = require('node:os')
 const { DEFAULT_CONFIG } = require('./config')
 
 // 配置文件路径
-const configPath = path.join(os.homedir(), '.utools-plugin-smart-translate.json')
+const configPath = path.join(os.homedir(), '.utools-plugin-ai-translate.json')
 
 // 核心服务
 const coreServices = {
@@ -73,6 +73,16 @@ const coreServices = {
     } catch (error) {
       console.error('导入配置失败：', error)
       return false
+    }
+  },
+  
+  // 获取剪贴板文本内容
+  getClipboardText() {
+    try {
+      return window.utools.copyText()
+    } catch (error) {
+      console.error('获取剪贴板内容失败：', error)
+      return ''
     }
   }
 }

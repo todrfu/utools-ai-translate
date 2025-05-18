@@ -1,7 +1,7 @@
 {
-  "name": "utools-smart-translate",
+  "name": "utools-ai-translate",
   "version": "0.0.1",
-  "description": "更智能的翻译工具",
+  "description": "utools翻译插件 - AI翻译",
   "type": "module",
   "scripts": {
     "dev": "vite",
