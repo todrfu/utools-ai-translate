@@ -28,4 +28,4 @@ module.exports = {
       throw new Error('彩云翻译解析响应出错')
     }
   },
-} 
+}

@@ -4,7 +4,10 @@ import React from 'react'
 // icons
 const modules = import.meta.glob('@/assets/images/translate/*', { eager: true })
 const iconMap = Object.fromEntries(
-  Object.keys(modules).map((key) => [key.split('/').pop().split('.').shift(), modules[key].default])
+  Object.keys(modules).map(key => [
+    key.split('/').pop().split('.').shift(),
+    modules[key].default,
+  ])
 )
 
 const TranslatorTabs = ({
@@ -47,14 +50,7 @@ const TranslatorTabs = ({
 
   // 渲染翻译器图标
   const renderTranslatorIcon = (key, name) => {
-    let icon = (
-      <img
-        src={iconMap[key]}
-        alt={name}
-        width='24'
-        height='24'
-      />
-    )
+    let icon = <img src={iconMap[key]} alt={name} width='24' height='24' />
 
     // 判断是否需要配置
     const needsConfig = translators[key]?.requiredFields?.length > 0

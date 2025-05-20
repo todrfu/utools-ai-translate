@@ -13,7 +13,7 @@ export const TranslateFooter = ({ onCopy, translatedText, showSettings }) => {
       onCopy(translatedText, false)
     }
   }
-  
+
   // 处理复制并隐藏
   const handleCopyAndHide = () => {
     if (translatedText && onCopy) {

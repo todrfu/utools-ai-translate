@@ -12,19 +12,19 @@ const coreServices = {
   getPlatform() {
     return os.platform()
   },
-  
+
   // 检查是否首次使用
   isFirstUse() {
     return !fs.existsSync(configPath)
   },
-  
+
   // 设置已使用标记
   setUsed() {
     if (!fs.existsSync(configPath)) {
       this.updateConfig(DEFAULT_CONFIG)
     }
   },
-  
+
   // 获取配置
   getConfig() {
     try {
@@ -37,7 +37,7 @@ const coreServices = {
     }
     return DEFAULT_CONFIG
   },
-  
+
   // 保存配置
   updateConfig(config) {
     try {
@@ -48,7 +48,7 @@ const coreServices = {
       return false
     }
   },
-  
+
   // 导出配置到指定路径
   exportConfig(filePath) {
     try {
@@ -60,7 +60,7 @@ const coreServices = {
       return false
     }
   },
-  
+
   // 从指定路径导入配置
   importConfig(filePath) {
     try {
@@ -75,7 +75,7 @@ const coreServices = {
       return false
     }
   },
-  
+
   // 获取剪贴板文本内容
   getClipboardText() {
     try {
@@ -84,7 +84,7 @@ const coreServices = {
       console.error('获取剪贴板内容失败：', error)
       return ''
     }
-  }
+  },
 }
 
-module.exports = coreServices 
+module.exports = coreServices

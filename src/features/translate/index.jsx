@@ -43,22 +43,34 @@ function TranslateFeature() {
   // 获取翻译服务配置
   const TRANSLATORS = window.services ? window.services.getTranslators() : {}
 
+  // 处理翻译指令
+  const handleTranslate = action => {
+    const CMDS = ['翻译', 'fy', 'ai']
+    if (!action.payload) return
+    const t = action.payload.trim()
+    if (!CMDS.includes(t)) {
+      setSourceText(t)
+    }
+  }
+
+  // 处理uTools插件进入事件
+  const handlePluginEnter = actionCode => {
+    return {
+      translate: handleTranslate,
+    }[actionCode]
+  }
+
+  // 处理uTools插件退出事件
+  const handlePluginOut = () => {
+    setSourceText('')
+  }
+
   useEffect(() => {
     if (window.services) {
-      // 处理uTools插件进入事件
       window.utools.onPluginEnter(action => {
-        if (action.code === 'translate') {
-          if (action.payload) {
-            const t = action.payload.trim()
-            setSourceText(t)
-          }
-        }
+        handlePluginEnter(action.code)(action)
       })
-
-      // 处理uTools插件退出事件
-      window.utools.onPluginOut(() => {
-        setSourceText('')
-      })
+      window.utools.onPluginOut(handlePluginOut)
     }
   }, [config])
 

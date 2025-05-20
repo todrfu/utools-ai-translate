@@ -87,7 +87,6 @@ const TranslateInput = ({
       />
 
       <div className='translate__input-tools'>
-
         <div className='translate__input-buttons'>
           {loading ? (
             <Tooltip title='取消翻译'>

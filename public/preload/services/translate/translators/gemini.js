@@ -16,7 +16,7 @@ module.exports = {
     // 默认模型为 gemini-2.0-flash
     const model = config.model || 'gemini-2.0-flash'
     const url = `${module.exports.baseUrl}/${model}:generateContent?key=${config.apiKey}`
-    
+
     return {
       method: 'post',
       url: url,
@@ -24,9 +24,11 @@ module.exports = {
         'Content-Type': 'application/json',
       },
       data: JSON.stringify({
-        contents: [{
-          parts: [{ text: prompt }]
-        }],
+        contents: [
+          {
+            parts: [{ text: prompt }],
+          },
+        ],
         generationConfig: {
           temperature: 0.2,
           maxOutputTokens: 3072,
@@ -35,10 +37,11 @@ module.exports = {
     }
   },
   parseResponse: data => {
+    const { content } = (data?.candidates || [])[0] || {}
+    const { text } = (content?.parts || [])[0] || {}
     try {
-      const translatedText = data?.candidates?.[0]?.content?.parts?.[0]?.text || ''
       return {
-        translatedText: translatedText.trim(),
+        translatedText: text.trim(),
         raw: data,
       }
     } catch (error) {

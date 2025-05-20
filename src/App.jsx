@@ -18,10 +18,8 @@ function App() {
   }, [])
 
   return (
-    <div className="app-container">
-      <Features 
-        featureCode={activeFeature} 
-      />
+    <div className='app-container'>
+      <Features featureCode={activeFeature} />
     </div>
   )
 }

@@ -12,10 +12,10 @@ const Features = ({ featureCode, ...props }) => {
   const FeatureComponent = FEATURES[featureCode] || null
 
   if (!FeatureComponent) {
-    return <div className="feature-not-found">功能不存在: {featureCode}</div>
+    return <div className='feature-not-found'>功能不存在: {featureCode}</div>
   }
 
   return <FeatureComponent {...props} />
 }
 
-export default Features 
+export default Features

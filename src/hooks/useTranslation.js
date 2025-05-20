@@ -1,7 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
 import { message } from 'antd'
 import { BehaviorSubject, combineLatest, Subject } from 'rxjs'
-import { debounceTime, distinctUntilChanged, filter, bufferTime } from 'rxjs/operators'
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  bufferTime,
+} from 'rxjs/operators'
 
 export function useTranslation(config) {
   const DEBOUNCE_TIME = 1000
@@ -38,15 +43,15 @@ export function useTranslation(config) {
   useEffect(() => {
     if (config) {
       setSourceLang(config.lastSourceLang || config.defaultSourceLang || 'auto')
-      setTargetLang(config.lastTargetLang || config.defaultTargetLang || '简体中文')
+      setTargetLang(
+        config.lastTargetLang || config.defaultTargetLang || '简体中文'
+      )
       if (
         config.lastSelectedTranslator &&
         config.enabledTranslators?.includes(config.lastSelectedTranslator)
       ) {
         setSelectedTranslator(config.lastSelectedTranslator)
-      } else if (
-        config.enabledTranslators?.length > 0
-      ) {
+      } else if (config.enabledTranslators?.length > 0) {
         setSelectedTranslator(config.enabledTranslators[0])
       }
     }
@@ -57,7 +62,7 @@ export function useTranslation(config) {
     const subscription = combineLatest([
       sourceText$.current.pipe(distinctUntilChanged()),
       targetLang$.current.pipe(distinctUntilChanged()),
-      translator$.current.pipe(distinctUntilChanged())
+      translator$.current.pipe(distinctUntilChanged()),
     ])
       .pipe(
         debounceTime(DEBOUNCE_TIME),
@@ -95,7 +100,7 @@ export function useTranslation(config) {
 
   // 翻译器选择处理函数
   const handleTranslatorChange = translator => {
-    if (translator === selectedTranslator) return;
+    if (translator === selectedTranslator) return
     cancelTranslation()
     setSelectedTranslator(translator)
     translator$.current.next(translator)
@@ -131,19 +136,12 @@ export function useTranslation(config) {
     lang = targetLang,
     translator = selectedTranslator
   ) => {
-    if (
-      !text ||
-      !config ||
-      !config.enabledTranslators ||
-      config.enabledTranslators.length === 0
-    ) {
+    if (!text || !config || !config.enabledTranslators?.length) {
       setTranslations({})
       setLoading(false)
       return
     }
-    const currentTranslator =
-      translator ||
-      (config.enabledTranslators && config.enabledTranslators[0])
+    const currentTranslator = translator || config.enabledTranslators?.[0]
     if (!currentTranslator) {
       return
     }

@@ -67,11 +67,16 @@ const TranslateResult = ({
     }
 
     if (!result?.translatedText) {
-      return <span className='translate__result-empty'>等待输入翻译内容...</span>
+      return (
+        <span className='translate__result-empty'>等待输入翻译内容...</span>
+      )
     }
 
     return (
-      <div className='translate__result-text' style={{ fontSize: `${fontSize}px` }}>
+      <div
+        className='translate__result-text'
+        style={{ fontSize: `${fontSize}px` }}
+      >
         {result.translatedText}
       </div>
     )

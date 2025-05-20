@@ -14,14 +14,15 @@ module.exports = {
     })
 
     // 使用 config 中的 baseUrl，如果没有提供则使用默认的
-    const baseUrl = config.baseUrl || 'https://api.openai.com/v1/chat/completions'
-    
+    const baseUrl =
+      config.baseUrl || 'https://api.openai.com/v1/chat/completions'
+
     return {
       method: 'post',
       url: baseUrl,
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${config.apiKey}`,
+        Authorization: `Bearer ${config.apiKey}`,
       },
       data: JSON.stringify({
         model: config.model || 'gpt-3.5-turbo',
@@ -34,8 +35,8 @@ module.exports = {
   parseResponse: data => {
     const { choices } = data
     if (choices && choices.length > 0) {
-      const { message } = choices[0]
-      if (message && message.content) {
+      const { message } = choices[0] || {}
+      if (message.content) {
         return {
           translatedText: message.content.trim(),
           raw: data,

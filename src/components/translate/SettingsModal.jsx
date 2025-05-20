@@ -43,8 +43,8 @@ export const SettingsModal = ({
           tab={SETTINGS_TABS.TRANSLATORS.label}
           key={SETTINGS_TABS.TRANSLATORS.key}
         >
-          <TranslatorsTab 
-            config={config} 
+          <TranslatorsTab
+            config={config}
             translators={translators}
             onConfigChange={onConfigChange}
             onConfigTranslatorAPI={onConfigTranslatorAPI}
@@ -55,16 +55,13 @@ export const SettingsModal = ({
           tab={SETTINGS_TABS.BACKUP.label}
           key={SETTINGS_TABS.BACKUP.key}
         >
-          <BackupTab 
-            onImportConfig={onImportConfig} 
-            onExportConfig={onExportConfig} 
+          <BackupTab
+            onImportConfig={onImportConfig}
+            onExportConfig={onExportConfig}
           />
         </TabPane>
 
-        <TabPane
-          tab={SETTINGS_TABS.ABOUT.label}
-          key={SETTINGS_TABS.ABOUT.key}
-        >
+        <TabPane tab={SETTINGS_TABS.ABOUT.label} key={SETTINGS_TABS.ABOUT.key}>
           <AboutTab />
         </TabPane>
       </Tabs>

@@ -6,7 +6,7 @@ export function useConfig() {
     enabledTranslators: [],
     searchPaths: [],
     excludePaths: [],
-    translatorConfigs: {}
+    translatorConfigs: {},
   })
 
   useEffect(() => {
@@ -40,54 +40,62 @@ export function useConfig() {
       ...config,
       translatorConfigs: {
         ...config.translatorConfigs,
-        [translatorKey]: apiConfig
-      }
+        [translatorKey]: apiConfig,
+      },
     }
 
     window.services.updateConfig(newConfig)
     setConfig(newConfig)
-    message.success(`配置${window.services.getTranslators()[translatorKey].name}成功`)
+    message.success(
+      `配置${window.services.getTranslators()[translatorKey].name}成功`
+    )
     return true
   }
 
-  const enableTranslator = (translatorKey) => {
+  const enableTranslator = translatorKey => {
     if (!translatorKey || !config) return false
 
     if (!config.enabledTranslators.includes(translatorKey)) {
       const newConfig = {
         ...config,
-        enabledTranslators: [...config.enabledTranslators, translatorKey]
+        enabledTranslators: [...config.enabledTranslators, translatorKey],
       }
       window.services.updateConfig(newConfig)
       setConfig(newConfig)
-      message.success(`启用${window.services.getTranslators()[translatorKey].name}成功`)
+      message.success(
+        `启用${window.services.getTranslators()[translatorKey].name}成功`
+      )
       return true
     }
     return false
   }
 
-  const disableTranslator = (translatorKey) => {
+  const disableTranslator = translatorKey => {
     if (!translatorKey || !config) return false
 
     if (config.enabledTranslators.includes(translatorKey)) {
       const newConfig = {
         ...config,
-        enabledTranslators: config.enabledTranslators.filter(t => t !== translatorKey)
+        enabledTranslators: config.enabledTranslators.filter(
+          t => t !== translatorKey
+        ),
       }
       window.services.updateConfig(newConfig)
       setConfig(newConfig)
-      message.success(`禁用${window.services.getTranslators()[translatorKey].name}成功`)
+      message.success(
+        `禁用${window.services.getTranslators()[translatorKey].name}成功`
+      )
       return true
     }
     return false
   }
 
-  const exportConfig = async (filePath) => {
+  const exportConfig = async filePath => {
     if (!filePath) return false
     return window.services.exportConfig(filePath)
   }
 
-  const importConfig = async (filePath) => {
+  const importConfig = async filePath => {
     if (!filePath) return false
     const success = window.services.importConfig(filePath)
     if (success) {
