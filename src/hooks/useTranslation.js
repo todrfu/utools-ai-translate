@@ -57,7 +57,7 @@ export function useTranslation(config) {
     }
   }, [config])
 
-  // 合并流统一触发翻译
+  // 自动翻译功能 - 根据配置决定是否在输入时翻译
   useEffect(() => {
     const subscription = combineLatest([
       sourceText$.current.pipe(distinctUntilChanged()),
@@ -130,6 +130,20 @@ export function useTranslation(config) {
     }
   }
 
+  // 语言检测映射 - 将检测到的语言映射到目标语言
+  const getAutoTargetLanguage = (detectedLang) => {
+    // 如果检测到中文相关语言，目标语言设为英语
+    const chineseLanguages = ['zh', 'zh-cn', 'zh-tw', 'chinese', '简体中文', '繁体中文', '中文']
+    if (chineseLanguages.some(lang => 
+      detectedLang && detectedLang.toLowerCase().includes(lang.toLowerCase())
+    )) {
+      return '英语'
+    }
+    
+    // 如果检测到非中文语言，目标语言设为简体中文
+    return '简体中文'
+  }
+
   // 执行翻译，支持参数
   const performTranslation = async (
     text = sourceText,
@@ -160,6 +174,23 @@ export function useTranslation(config) {
         )
         if (abortControllerRef.current === null) return
         newTranslations[currentTranslator] = result
+        
+        // 自动切换目标语言逻辑
+        if (result.detectedLanguage && sourceLang === 'auto') {
+          const newTargetLang = getAutoTargetLanguage(result.detectedLanguage)
+          if (newTargetLang !== lang) {
+            // 更新目标语言
+            setTargetLang(newTargetLang)
+            targetLang$.current.next(newTargetLang)
+            updateUserPreference('lastTargetLang', newTargetLang)
+            
+            // 如果目标语言改变了，重新翻译
+            setTimeout(() => {
+              performTranslation(text, newTargetLang, currentTranslator)
+            }, 100)
+            return
+          }
+        }
       } catch (error) {
         if (error.name === 'AbortError' || error.code === 'ECONNABORTED') {
           return
@@ -183,10 +214,30 @@ export function useTranslation(config) {
     }
   }
 
+  // 检测文本语言并自动切换目标语言
+  const detectAndSwitchTargetLanguage = (text) => {
+    if (!text.trim() || sourceLang !== 'auto') return
+    
+    // 简单的语言检测 - 检查是否包含中文字符
+    const chineseRegex = /[\u4e00-\u9fff]/
+    const isChinese = chineseRegex.test(text)
+    
+    const newTargetLang = isChinese ? '英语' : '简体中文'
+    
+    if (newTargetLang !== targetLang) {
+      setTargetLang(newTargetLang)
+      targetLang$.current.next(newTargetLang)
+      updateUserPreference('lastTargetLang', newTargetLang)
+    }
+  }
+
   // 更新sourceText
   const handleSourceTextChange = text => {
     setSourceText(text)
     sourceText$.current.next(text)
+    
+    // 当文本改变时，尝试自动切换目标语言
+    detectAndSwitchTargetLanguage(text)
   }
 
   // 源语言改变处理函数
@@ -224,10 +275,17 @@ export function useTranslation(config) {
     ensureInputFocus()
   }
 
-  // 处理三击退格清空功能
+  // 处理键盘事件
   const handleKeyDown = e => {
-    if (!config?.tripleBackspaceClear) return
-    if (e.key === 'Backspace') {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      // 触发翻译
+      if (sourceText.trim()) {
+        translate()
+      }
+    }
+    
+    // 处理三击退格清空功能
+    if (config?.tripleBackspaceClear && e.key === 'Backspace') {
       backspace$.current.next(Date.now())
     }
   }

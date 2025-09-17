@@ -13,7 +13,7 @@ const DEFAULT_CONFIG = {
 
   // 界面设置
   fontSize: 16, // 字体大小
-  translateOnTyping: true, // 是否在输入时翻译
+  translateOnTyping: false, // 是否在输入时翻译
   removeLineBreaks: false, // 是否去除换行
 
   tripleBackspaceClear: true, // 三击退格键清空
